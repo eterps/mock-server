@@ -40,6 +40,7 @@ class MockServer < Sinatra::Base
     STDERR.puts request.body.read.inspect
 
     mock = MOCKS[{'path' => path, 'method' => 'POST'}]
+    mock ||= MOCKS[{'path' => path}]
 
     status mock['status']
     headers mock['headers']

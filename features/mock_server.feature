@@ -76,6 +76,27 @@ Feature: Mock Server
       """
     And the header "X-Test" should be "test"
 
+  Scenario: Register a POST method mock without specifying methods
+    Given I send a POST request to "/_mocks" with the following:
+      """json
+      {
+        "request": {
+          "path": "test"
+        },
+        "response": {
+          "body": "Hello world!"
+        }
+      }
+      """
+    When I send a POST request to "/test" with the following:
+      """
+      """
+    Then the response should be:
+      """
+      Hello world!
+      """
+    And the status should be "200"
+
   Scenario: Register a POST method mock
     Given I send a POST request to "/_mocks" with the following:
       """json
