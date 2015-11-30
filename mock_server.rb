@@ -1,5 +1,6 @@
 require_relative 'bundle/bundler/setup'
 require 'sinatra/base'
+require 'json'
 
 class MockServer < Sinatra::Base
   set :port, ENV['PORT'] || 8080
@@ -11,6 +12,8 @@ class MockServer < Sinatra::Base
     payload = JSON(request.body.read)
 
     MOCKS[payload['request']] = payload['response']
+
+    ''
   end
 
   get '/*' do |path|
