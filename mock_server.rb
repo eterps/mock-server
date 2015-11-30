@@ -24,5 +24,20 @@ class MockServer < Sinatra::Base
     body mock['body']
   end
 
+  options '/*' do |path|
+    mock = MOCKS[{'path' => path}]
+
+    status mock['status']
+    headers mock['headers']
+  end
+
+  post '/*' do |path|
+    mock = MOCKS[{'path' => path, 'method' => 'POST'}]
+
+    status mock['status']
+    headers mock['headers']
+    body mock['body']
+  end
+
   run! if app_file == $PROGRAM_NAME
 end

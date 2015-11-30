@@ -6,6 +6,10 @@ Given(/^I send a GET request to "([^"]*)"$/) do |path|
   get path
 end
 
+Given(/^I send an OPTIONS request to "([^"]*)"$/) do |path|
+  options path
+end
+
 Then(/^the response should be:$/) do |expected_response|
   expect(last_response.body).to eq(expected_response)
 end

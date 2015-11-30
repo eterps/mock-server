@@ -19,6 +19,20 @@ Feature: Mock Server
       """
     And the status should be "200"
 
+    Given I send a POST request to "/_mocks" with the following:
+      """json
+      {
+        "request": {
+          "path": "test"
+        },
+        "response": {
+          "body": "Hello world!"
+        }
+      }
+      """
+    And I send an OPTIONS request to "/test"
+    And the status should be "200"
+
   Scenario: Register a mock with status code
     Given I send a POST request to "/_mocks" with the following:
       """json
@@ -60,3 +74,25 @@ Feature: Mock Server
       Hello world!
       """
     And the header "X-Test" should be "test"
+
+  Scenario: Register a POST method mock
+    Given I send a POST request to "/_mocks" with the following:
+      """json
+      {
+        "request": {
+          "method": "POST",
+          "path": "test"
+        },
+        "response": {
+          "body": "Hello world!"
+        }
+      }
+      """
+    And I send a POST request to "/test" with the following:
+      """
+      """
+    Then the response should be:
+      """
+      Hello world!
+      """
+    And the status should be "200"
