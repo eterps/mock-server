@@ -6,6 +6,7 @@ class MockServer < Sinatra::Base
   set :port, ENV['PORT'] || 8080
   set :bind, '0.0.0.0'
 
+  LAST_REQUEST = nil
   MOCKS = {}
 
   post '/_mocks' do
@@ -16,8 +17,12 @@ class MockServer < Sinatra::Base
     ''
   end
 
+  get '/_last_request' do
+    JSON.pretty_unparse(Hash[*LAST_REQUEST.env.select{|k, v| k.upcase == k}.sort.flatten])
+  end
+
   get '/*' do |path|
-    STDERR.puts "GET #{path}"
+    LAST_REQUEST = request
 
     mock = MOCKS[{'path' => path}]
 
@@ -27,7 +32,7 @@ class MockServer < Sinatra::Base
   end
 
   options '/*' do |path|
-    STDERR.puts "OPTIONS #{path}"
+    LAST_REQUEST = request
 
     mock = MOCKS[{'path' => path}]
 
@@ -36,8 +41,7 @@ class MockServer < Sinatra::Base
   end
 
   post '/*' do |path|
-    STDERR.puts "POST #{path}"
-    STDERR.puts request.body.read.inspect
+    LAST_REQUEST = request
 
     mock = MOCKS[{'path' => path, 'method' => 'POST'}]
     mock ||= MOCKS[{'path' => path}]
