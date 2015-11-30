@@ -17,6 +17,8 @@ class MockServer < Sinatra::Base
   end
 
   get '/*' do |path|
+    STDERR.puts "GET #{path}"
+
     mock = MOCKS[{'path' => path}]
 
     status mock['status']
@@ -25,6 +27,8 @@ class MockServer < Sinatra::Base
   end
 
   options '/*' do |path|
+    STDERR.puts "OPTIONS #{path}"
+
     mock = MOCKS[{'path' => path}]
 
     status mock['status']
@@ -32,6 +36,9 @@ class MockServer < Sinatra::Base
   end
 
   post '/*' do |path|
+    STDERR.puts "POST #{path}"
+    STDERR.puts request.body.read.inspect
+
     mock = MOCKS[{'path' => path, 'method' => 'POST'}]
 
     status mock['status']
