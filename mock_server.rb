@@ -18,7 +18,7 @@ class MockServer < Sinatra::Base
   end
 
   get '/_last_request' do
-    JSON.pretty_unparse(Hash[*LAST_REQUEST.env.select{|k, v| k.upcase == k}.sort.flatten])
+    JSON.pretty_unparse(Hash[*LAST_REQUEST.env.select{|k, _| k.upcase == k}.sort.flatten])
   end
 
   get '/*' do |path|
