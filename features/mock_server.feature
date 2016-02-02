@@ -149,3 +149,21 @@ Feature: Mock Server
         "SERVER_PORT": "80"
       }
       """
+
+  Scenario: Purge all registered mocks
+    Given I send a POST request to "/_mocks" with the following:
+      """json
+      {
+        "request": {
+          "path": "test"
+        },
+        "response": {
+          "body": "Hello world!"
+        }
+      }
+      """
+    And I send a POST request to "/_purge" with the following:
+      """
+      """
+    When I send a GET request to "/test"
+    Then the status should be "404"

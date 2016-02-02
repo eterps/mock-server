@@ -28,11 +28,13 @@ class MockServer < Sinatra::Base
   get '/*' do |path|
     LAST_REQUEST = request
 
-    mock = MOCKS[{'path' => path}]
-
-    status mock['status']
-    headers mock['headers']
-    body mock['body']
+    if mock = MOCKS[{'path' => path}]
+      status mock['status']
+      headers mock['headers']
+      body mock['body']
+    else
+      status 404
+    end
   end
 
   options '/*' do |path|
