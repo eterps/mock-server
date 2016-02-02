@@ -9,6 +9,10 @@ class MockServer < Sinatra::Base
   LAST_REQUEST = nil
   MOCKS = {}
 
+  post '/_purge' do
+    MOCKS = {}
+  end
+
   post '/_mocks' do
     payload = JSON(request.body.read)
 
