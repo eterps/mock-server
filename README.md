@@ -1,6 +1,6 @@
 # mock-server
 
-A server for easy mocking of HTTP requests
+A server for easy mocking of HTTP requests.
 
 ## Documentation
 
